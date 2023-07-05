@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node test.ts"
   },
   "repository": {
     "type": "git",
@@ -24,26 +24,5 @@
   "dependencies": {
     "mysql2": "^3.4.5",
     "yaml": "^2.3.1"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "extensions": [
-            ".js",
-            ".ts"
-          ],
-          "alias": {
-            "@": [
-              "src"
-            ]
-          }
-        }
-      ]
-    ]
   }
 }

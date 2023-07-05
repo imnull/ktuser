@@ -16,7 +16,7 @@ const createPool = () => {
 const POOL = createPool()
 
 
-export const query = <T extends Record<string, any> = Record<string, any>>(sql: string, values: any[] = []) => new Promise<T[]>((resolve, reject) => {
+export const query = <T extends Record<string, any> = Record<string, any>>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T[]>((resolve, reject) => {
     POOL.getConnection((err, conn) => {
         if(err) {
             conn.destroy()
@@ -25,7 +25,7 @@ export const query = <T extends Record<string, any> = Record<string, any>>(sql: 
             conn.query({
                 sql,
                 values,
-                rowsAsArray: false,
+                rowsAsArray: asArray,
             }, (err, res: T[]) => {
                 conn.destroy()
                 if(err) {
@@ -36,8 +36,4 @@ export const query = <T extends Record<string, any> = Record<string, any>>(sql: 
             })
         }
     })
-})
-
-query<{ id: number; typename: string; description: string; status: number; }>(`SELECT * FROM config_apptype`).then(res => {
-    console.log(res)
 })
