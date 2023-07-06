@@ -1,5 +1,4 @@
 import { createConn, executeTrans } from '../libs/mysql'
-import { KTUserConfig } from '../libs/env-conf'
 import {
     CREATE_DATABASE,
     CREATE_TABLES,

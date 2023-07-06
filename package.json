@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ts-node test.ts"
+    "test": "ts-node -r tsconfig-paths/register test.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/imnull/ktuser#readme",
   "devDependencies": {
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6"
   },
   "dependencies": {

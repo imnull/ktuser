@@ -1,4 +1,4 @@
-import { query } from '../libs/mysql'
+import { query } from 'libs/mysql'
 
 import {
     APP_TYPE_LIST,
@@ -14,3 +14,5 @@ export const apptypeGetID = async (typeName: string) => {
     const [row = []] = await query(APP_TYPE_GET_ID, [typeName], true)
     return (Array.isArray(row) ? row[0] || 0 : 0) as number
 }
+
+export * from './init-database'

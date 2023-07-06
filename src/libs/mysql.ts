@@ -30,7 +30,7 @@ const createPool = () => {
 
 const POOL = createPool()
 
-export const query = <T extends Record<string, any> = Record<string, any>>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T[]>((resolve, reject) => {
+export const query = <T = any>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T[]>((resolve, reject) => {
     POOL.getConnection((err, conn) => {
         if(err) {
             reject(err)
@@ -51,7 +51,7 @@ export const query = <T extends Record<string, any> = Record<string, any>>(sql: 
     })
 })
 
-export const execute = <T extends Record<string, any> = Record<string, any>>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T[]>((resolve, reject) => {
+export const execute = <T = any>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T>((resolve, reject) => {
     POOL.getConnection((err, conn) => {
         if(err) {
             reject(err)
@@ -60,7 +60,7 @@ export const execute = <T extends Record<string, any> = Record<string, any>>(sql
                 sql,
                 values,
                 rowsAsArray: asArray,
-            }, (err, res: T[]) => {
+            }, (err, res: T) => {
                 conn.destroy()
                 if(err) {
                     reject(err)
@@ -72,7 +72,7 @@ export const execute = <T extends Record<string, any> = Record<string, any>>(sql
     })
 })
 
-export const executeTrans = <T extends Record<string, any> = Record<string, any>>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T[]>((resolve, reject) => {
+export const executeTrans = <T = any>(sql: string, values: any[] = [], asArray: boolean = false) => new Promise<T>((resolve, reject) => {
     POOL.getConnection((err, conn) => {
         if(err) {
             reject(err)
@@ -85,7 +85,7 @@ export const executeTrans = <T extends Record<string, any> = Record<string, any>
                         sql,
                         values,
                         rowsAsArray: asArray,
-                    }, (err, res: T[]) => {
+                    }, (err, res: T) => {
                         if(err) {
                             conn.rollback(() => {
                                 conn.destroy()
@@ -104,7 +104,6 @@ export const executeTrans = <T extends Record<string, any> = Record<string, any>
                     })
                 }
             })
-            
         }
     })
 })
