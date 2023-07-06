@@ -24,10 +24,16 @@ export class GlobalConfig<T extends Record<string, string>> {
     private readonly config: T
     private readonly name: string
     private readonly keys: (keyof T)[]
+    private readonly cache: { [k in keyof T]?: string }
     constructor(name: string, config: T) {
         this.name = name
         this.config = config
         this.keys = Object.keys(config)
+        this.cache = {}
+    }
+
+    resetCache() {
+        this.keys.forEach(k => this.cache[k] = '')
     }
 
     protected getEnv() {
@@ -42,7 +48,7 @@ export class GlobalConfig<T extends Record<string, string>> {
     }
 
     protected getRcName() {
-        return `.${this.name}`
+        return `.${this.name}rc`
     }
 
     protected getRc() {
@@ -63,15 +69,20 @@ export class GlobalConfig<T extends Record<string, string>> {
         const rc = this.getRc()
         const ev = this.getEnv()
         this.keys.forEach(key => {
-            o[key] = [ev[key], rc[key]].reduce((r, v) => isValid(v) ? v : r, '')
+            o[key] = [ev[key], rc[key], this.cache[key]].reduce((r, v) => isValid(v) ? v : r, '')
         })
         return o as T
+    }
+
+    set(key: keyof T, value: string) {
+        this.cache[key] = value
     }
 
     save() {
         const yml = yaml.stringify(this.get())
         const rcfile = getRcPath(this.getRcName())
         fs.writeFileSync(rcfile, yml)
+        this.resetCache()
     }
 }
 
